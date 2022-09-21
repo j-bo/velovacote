@@ -7,39 +7,44 @@ class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<StationsBloc, StationsState>(
-        builder: (context, state) {
-          if (state is StationsLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state is StationsLoadedState) {
-            return Center(
-                child: ListView.builder(
-              itemCount: state.stations.length,
-              shrinkWrap: true,
-              itemBuilder: ((context, index) {
-                return _stationCard(context, state.stations[index]);
-              }),
-            ));
-          }
-          if (state is StationsErrorState) {
-            return Center(
-              child: Text(state.error),
-            );
-          }
-          return Container();
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
+    return RefreshIndicator(
+        child: Scaffold(
+          body: BlocBuilder<StationsBloc, StationsState>(
+            builder: (context, state) {
+              if (state is StationsLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is StationsLoadedState) {
+                return Center(
+                    child: ListView.builder(
+                  itemCount: state.stations.length,
+                  shrinkWrap: true,
+                  itemBuilder: ((context, index) {
+                    return _stationCard(context, state.stations[index]);
+                  }),
+                ));
+              }
+              if (state is StationsErrorState) {
+                return Center(
+                  child: Text(state.error),
+                );
+              }
+              return Container();
+            },
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              BlocProvider.of<StationsBloc>(context)
+                  .add(RefreshStationsEvent());
+            },
+            child: const Icon(Icons.refresh),
+          ),
+        ),
+        onRefresh: () async {
           BlocProvider.of<StationsBloc>(context).add(RefreshStationsEvent());
-        },
-        child: const Icon(Icons.refresh),
-      ),
-    );
+        });
   }
 
   Center _stationCard(context, StationModel station) {
