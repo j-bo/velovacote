@@ -14,7 +14,8 @@ class StationsBloc extends Bloc<StationsEvent, StationsState> {
     on<RefreshStationsEvent>((event, emit) async {
       emit(StationsLoadingState());
       try {
-        final stations = await _stationRepository.getStations(_watchedIds);
+        var stations = await _stationRepository.getStations(_watchedIds);
+        stations = await _stationRepository.updateStationsNames(stations);
         emit(StationsLoadedState(stations));
       } catch (e) {
         emit(StationsErrorState(e.toString()));

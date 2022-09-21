@@ -21,9 +21,13 @@ class MyApp extends StatelessWidget {
                   RepositoryProvider.of<StationRepository>(context),
                 )..add(RefreshStationsEvent()),
             child: MaterialApp(
-              title: "Velo'v à coté",
-              theme: ThemeData(useMaterial3: false),
-              home: const Home(),
-            )));
+                title: "Velo'v à coté",
+                theme: ThemeData(useMaterial3: false),
+                home: const Home(),
+                navigatorKey: NavigationService.navigatorKey)));
   }
+}
+
+class NavigationService {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }

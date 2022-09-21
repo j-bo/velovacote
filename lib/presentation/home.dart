@@ -65,7 +65,7 @@ class Home extends StatelessWidget {
                   child: Text(
                     "${station.name} : ${station.nAvailableBikes}/${station.nTotalDocks}",
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 19,
                         color: _getStationTextColor(station.nAvailableBikes)),
                   ),
                 ))));
